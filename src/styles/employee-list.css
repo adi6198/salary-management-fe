@@ -1,0 +1,133 @@
+.filters-container {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.filters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.filter-item {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Ensure inputs in filters don't have bottom margin */
+.filter-item .input-group {
+  margin-bottom: 0;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  height: 42px; /* Match input height */
+}
+
+.reset-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.reset-filters-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-color);
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.page-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Employee Details */
+.employee-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.employee-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.employee-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.employee-email {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  color: var(--text-secondary);
+}
+
+.action-btn:hover {
+  color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+  }
+  
+  .filters-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-item {
+    min-width: 100%;
+  }
+}
