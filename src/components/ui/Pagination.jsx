@@ -10,7 +10,7 @@ const Pagination = ({
   limit, 
   onLimitChange 
 }) => {
-  if (totalPages <= 1 && (!totalItems || totalItems <= limit)) return null;
+  if (totalPages <= 1 && (!totalItems)) return null;
 
   const generatePageNumbers = () => {
     const pages = [];

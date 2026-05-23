@@ -2,6 +2,7 @@ import * as authApi from '../api/auth.api';
 import { mockEmployees } from './employees.mock';
 import { mockDepartments } from './departments.mock';
 import { mockJobTitles } from './jobTitles.mock';
+import { mockAuditLogs } from './auditLogs.mock';
 
 // Helper to simulate network latency
 const simulateDelay = (data, delayMs = 400) => {
@@ -81,20 +82,35 @@ export const getEmployees = async (params = {}) => {
       );
     }
 
-    // Filter by status
-    if (params.status !== undefined && params.status !== '') {
-      const isActive = params.status === 'ACTIVE' || params.status === 'true' || params.status === true;
+    // Filter by status (is_active)
+    if (params.is_active !== undefined && params.is_active !== '') {
+      const isActive = params.is_active === 'ACTIVE' || params.is_active === 'true' || params.is_active === true;
       result = result.filter(e => e.isActive === isActive);
     }
 
+    // Filter by country
+    if (params.country) {
+      result = result.filter(e => e.country === params.country);
+    }
+
+    // Filter by gender
+    if (params.gender) {
+      result = result.filter(e => e.gender === params.gender);
+    }
+
+    // Filter by employment type
+    if (params.employment_type) {
+      result = result.filter(e => e.employmentType === params.employment_type);
+    }
+
     // Filter by department
-    if (params.departmentId) {
-      result = result.filter(e => e.departmentId === params.departmentId);
+    if (params.department_id) {
+      result = result.filter(e => e.departmentId === params.department_id);
     }
 
     // Filter by job title
-    if (params.jobTitleId) {
-      result = result.filter(e => e.jobTitleId === params.jobTitleId);
+    if (params.job_title_id) {
+      result = result.filter(e => e.jobTitleId === params.job_title_id);
     }
 
     // Sorting
@@ -150,4 +166,32 @@ export const getJobTitles = async () => {
     success: true,
     data: mockJobTitles
   });
+};
+
+export const getAuditLogs = async (employeeId, params = {}) => {
+  return simulateDelay((() => {
+    // Filter by employeeId
+    const result = mockAuditLogs.filter(log => log.employeeId === employeeId);
+
+    // Pagination
+    const page = parseInt(params.page, 10) || 1;
+    const limit = parseInt(params.limit, 10) || 10;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    const paginatedItems = result.slice(startIndex, endIndex);
+
+    return {
+      success: true,
+      data: {
+        items: paginatedItems,
+        meta: {
+          total: result.length,
+          page,
+          limit,
+          totalPages: Math.ceil(result.length / limit),
+        }
+      }
+    };
+  })(), 500);
 };

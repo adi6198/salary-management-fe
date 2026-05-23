@@ -5,6 +5,7 @@
   margin-bottom: 1.5rem;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .filters-grid {
@@ -50,6 +51,7 @@
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
+  flex-shrink: 0;
 }
 
 .page-title {
@@ -130,4 +132,24 @@
   .filter-item {
     min-width: 100%;
   }
+}
+
+.employee-list-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+.employee-list-page .table-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.employee-list-page .table-empty-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

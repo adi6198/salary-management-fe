@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.16.1",
+    "country-to-currency": "^2.0.3",
     "date-fns": "^4.2.1",
     "i18n-iso-countries": "^7.14.0",
     "lucide-react": "^1.16.0",

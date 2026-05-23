@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export const useEmployeeFilters = (initialFilters = {}) => {
   const [filters, setFilters] = useState({
     search: '',
-    status: 'true', // 'true' for active, 'false' for inactive, '' for all
+    is_active: 'all', // 'true' for active, 'false' for inactive, '' for all
     departmentId: '',
     jobTitleId: '',
     ...initialFilters
@@ -19,7 +19,7 @@ export const useEmployeeFilters = (initialFilters = {}) => {
   const resetFilters = useCallback(() => {
     setFilters({
       search: '',
-      status: 'true',
+      is_active: 'all',
       departmentId: '',
       jobTitleId: '',
       ...initialFilters
