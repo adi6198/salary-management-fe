@@ -87,7 +87,7 @@ const EmployeeDetailPage = () => {
 
   const breadcrumbs = [
     { label: 'Employees', path: '/employees' },
-    { label: `${employee.firstName} ${employee.lastName}`, path: `/employees/${id}` }
+    { label: employee.fullName, path: `/employees/${id}` }
   ];
 
   const countryName = employee.country ? countries.getName(employee.country, 'en') : '-';
@@ -103,8 +103,7 @@ const EmployeeDetailPage = () => {
         <Card className="detail-card">
           <h3 className="detail-card-title">Personal Information</h3>
           <div className="detail-card-content">
-            <DetailItem label="First Name" value={employee.firstName} />
-            <DetailItem label="Last Name" value={employee.lastName} />
+            <DetailItem label="Full Name" value={employee.fullName} />
             <DetailItem label="Email" value={employee.email} />
             <DetailItem label="Phone" value={employee.phone} />
             <DetailItem label="Gender" value={formatEmploymentType(employee.gender)} />
@@ -155,11 +154,11 @@ const EmployeeDetailPage = () => {
       <div className="detail-header">
         <div className="detail-header-left">
           <div className="detail-avatar-large">
-            {employee.firstName.charAt(0)}{employee.lastName.charAt(0)}
+            {employee.fullName ? employee.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'EE'}
           </div>
           <div>
             <div className="detail-title-row">
-              <h1 className="detail-name">{employee.firstName} {employee.lastName}</h1>
+              <h1 className="detail-name">{employee.fullName}</h1>
               <Badge variant={employee.isActive ? 'success' : 'danger'}>
                 {employee.isActive ? 'Active' : 'Inactive'}
               </Badge>
@@ -214,7 +213,7 @@ const EmployeeDetailPage = () => {
           isOpen={isDeactivateModalOpen}
           onClose={() => setIsDeactivateModalOpen(false)}
           onConfirm={handleDeactivate}
-          employeeName={`${employee.firstName} ${employee.lastName}`}
+          employeeName={employee.fullName}
           employeeCode={employee.employeeCode}
         />
       )}
@@ -224,7 +223,7 @@ const EmployeeDetailPage = () => {
           isOpen={isActivateModalOpen}
           onClose={() => setIsActivateModalOpen(false)}
           onConfirm={handleActivate}
-          employeeName={`${employee.firstName} ${employee.lastName}`}
+          employeeName={employee.fullName}
           employeeCode={employee.employeeCode}
         />
       )}

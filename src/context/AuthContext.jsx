@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await apiLogin(email, password);
       // Response contains token and user
-      const token = response.token;
-      const user = response.user;
+      const token = response?.data?.token;
+      const user = response?.data?.user;
 
       storage.setToken(token);
       storage.setUser(user);

@@ -16,8 +16,7 @@ const simulateDelay = (data, delayMs = 400) => {
 const mockUser = {
   id: 'd9b04f32-cf50-4822-8356-d762e87c0a87',
   email: 'admin@company.com',
-  firstName: 'Admin',
-  lastName: 'User',
+  fullName: 'Admin User',
   role: 'HR_MANAGER',
   isActive: true,
 };
@@ -75,8 +74,7 @@ export const getEmployees = async (params = {}) => {
       const q = params.search.toLowerCase();
       result = result.filter(
         e =>
-          e.firstName.toLowerCase().includes(q) ||
-          e.lastName.toLowerCase().includes(q) ||
+          e.fullName.toLowerCase().includes(q) ||
           e.email.toLowerCase().includes(q) ||
           e.employeeCode.toLowerCase().includes(q)
       );

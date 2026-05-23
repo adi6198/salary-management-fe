@@ -91,7 +91,7 @@ const EmployeeListPage = () => {
       render: (_, row) => (
         <div className="employee-cell">
           <div className="employee-info">
-            <span className="employee-name">{row.isActive ? '🟢' : '🔴'}{row.firstName} {row.lastName}</span>
+            <span className="employee-name">{row.isActive ? '🟢' : '🔴'}{row.fullName}</span>
             <span className="employee-email">{row.email}</span>
           </div>
         </div>

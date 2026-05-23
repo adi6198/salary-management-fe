@@ -39,7 +39,6 @@ apiClient.interceptors.response.use(
     if (res && res.success !== undefined && res.data !== undefined) {
       // Backend pagination format
       if (res.pagination) {
-        console.log(res.data, res.pagination);
         return { data: res.data, meta: res.pagination };
       }
       // Mock pagination format
