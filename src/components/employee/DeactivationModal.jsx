@@ -51,8 +51,6 @@ const DeactivationModal = ({ isOpen, onClose, onConfirm, employeeName, employeeC
     { label: 'Resigned', value: 'RESIGNED' },
     { label: 'Terminated', value: 'TERMINATED' },
     { label: 'End of Contract', value: 'END_OF_CONTRACT' },
-    { label: 'Layoff', value: 'LAYOFF' },
-    { label: 'Other', value: 'OTHER' }
   ];
 
   return (

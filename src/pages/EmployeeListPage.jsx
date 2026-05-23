@@ -138,6 +138,7 @@ const EmployeeListPage = () => {
       key: 'actions',
       header: 'Actions',
       align: 'right',
+      pinned: 'right',
       width: '120px',
       render: (_, row) => (
         <div className="action-buttons justify-end">
@@ -177,14 +178,6 @@ const EmployeeListPage = () => {
           <p className="page-description">Manage your company's workforce and salary information</p>
         </div>
         <div className="page-actions">
-          <Button 
-            variant="outline" 
-            onClick={handleExport}
-            isLoading={isExporting}
-          >
-            <Download size={18} className="mr-2" />
-            Export CSV
-          </Button>
           <Button 
             variant="primary" 
             onClick={() => navigate('/employees/add')}

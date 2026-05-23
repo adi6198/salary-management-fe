@@ -49,7 +49,7 @@ const AuditHistoryTab = ({ employeeId }) => {
       header: 'Changed By',
       render: (val) => {
         if (typeof val === 'object' && val !== null) {
-          return `${val.firstName} ${val.lastName}`;
+          return `${val.fullName}`;
         }
         return val || '-';
       }

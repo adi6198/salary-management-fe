@@ -73,7 +73,7 @@ const DataTable = ({
             {columns.map((col) => (
               <th 
                 key={col.key} 
-                className={`${col.sortable ? 'sortable' : ''} ${col.align === 'right' ? 'text-right' : ''}`}
+                className={`${col.sortable ? 'sortable' : ''} ${col.align === 'right' ? 'text-right' : ''} ${col.pinned === 'right' ? 'col-pinned-right' : ''}`}
                 onClick={() => col.sortable && onSort(col.key)}
                 style={{ width: col.width }}
               >
@@ -100,7 +100,7 @@ const DataTable = ({
                   {columns.map((col) => (
                     <td 
                       key={`${rowId}-${col.key}`}
-                      className={`${col.align === 'right' ? 'text-right' : ''}`}
+                      className={`${col.align === 'right' ? 'text-right' : ''} ${col.pinned === 'right' ? 'col-pinned-right' : ''}`}
                     >
                       {col.render ? col.render(row[col.key], row) : row[col.key]}
                     </td>

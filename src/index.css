@@ -7,6 +7,8 @@
   --border-subtle: #2e3447;
   --border-focus: #6366f1;
 
+  --card-bg: var(--bg-surface);
+
   /* Text */
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
