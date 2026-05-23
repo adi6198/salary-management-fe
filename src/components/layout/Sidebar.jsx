@@ -35,10 +35,10 @@ const Sidebar = () => {
       <div className="sidebar-footer">
         <div className="user-profile">
           <div className="user-avatar">
-            {user?.firstName?.[0] || 'U'}{user?.lastName?.[0] || 'A'}
+            {user?.fullName ? user.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'U'}
           </div>
           <div className="user-info">
-            <span className="user-name">{user?.firstName} {user?.lastName}</span>
+            <span className="user-name">{user?.fullName}</span>
             <span className="user-role">HR Manager</span>
           </div>
         </div>

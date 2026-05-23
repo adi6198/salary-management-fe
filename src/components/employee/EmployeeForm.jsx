@@ -33,8 +33,7 @@ const EmployeeForm = ({
     setValue
   } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      fullName: '',
       email: '',
       phone: '',
       gender: '',
@@ -125,23 +124,13 @@ const EmployeeForm = ({
               </div>
             )}
             
-            <div className="form-group">
+            <div className="form-group full-width">
               <Input
-                label="First Name"
+                label="Full Name"
                 required
-                className={getFieldClass('firstName')}
-                error={errors.firstName?.message}
-                {...register('firstName', { required: validators.required })}
-              />
-            </div>
-            
-            <div className="form-group">
-              <Input
-                label="Last Name"
-                required
-                className={getFieldClass('lastName')}
-                error={errors.lastName?.message}
-                {...register('lastName', { required: validators.required })}
+                className={getFieldClass('fullName')}
+                error={errors.fullName?.message}
+                {...register('fullName', { required: validators.required })}
               />
             </div>
 

@@ -28,7 +28,7 @@ const EditEmployeePage = () => {
 
   const breadcrumbs = [
     { label: 'Employees', path: '/employees' },
-    { label: employee ? `${employee.firstName} ${employee.lastName}` : 'Loading...', path: `/employees/${id}` },
+    { label: employee ? employee.fullName : 'Loading...', path: `/employees/${id}` },
     { label: 'Edit', path: `/employees/${id}/edit` }
   ];
 
@@ -84,7 +84,7 @@ const EditEmployeePage = () => {
       <div className="page-header">
         <div>
           <h1 className="page-title">Edit Employee</h1>
-          <p className="page-description">Update profile information for {employee.firstName} {employee.lastName}</p>
+          <p className="page-description">Update profile information for {employee.fullName}</p>
         </div>
       </div>
 

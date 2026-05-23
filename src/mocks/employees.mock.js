@@ -2,8 +2,7 @@ export const mockEmployees = [
   {
     id: 'e1',
     employeeCode: 'EMP-0001',
-    firstName: 'John',
-    lastName: 'Doe',
+    fullName: 'John Doe',
     email: 'john.doe@company.com',
     phone: '555-0100',
     gender: 'MALE',
@@ -23,8 +22,7 @@ export const mockEmployees = [
   {
     id: 'e2',
     employeeCode: 'EMP-0002',
-    firstName: 'Jane',
-    lastName: 'Smith',
+    fullName: 'Jane Smith',
     email: 'jane.smith@company.com',
     phone: '555-0101',
     gender: 'FEMALE',
@@ -44,8 +42,7 @@ export const mockEmployees = [
   {
     id: 'e3',
     employeeCode: 'EMP-0003',
-    firstName: 'Alex',
-    lastName: 'Johnson',
+    fullName: 'Alex Johnson',
     email: 'alex.j@company.com',
     phone: '555-0102',
     gender: 'OTHER',
@@ -67,8 +64,7 @@ export const mockEmployees = [
   {
     id: 'e4',
     employeeCode: 'EMP-0004',
-    firstName: 'Priya',
-    lastName: 'Patel',
+    fullName: 'Priya Patel',
     email: 'priya.p@company.com',
     phone: '555-0103',
     gender: 'FEMALE',
@@ -88,8 +84,7 @@ export const mockEmployees = [
   {
     id: 'e5',
     employeeCode: 'EMP-0005',
-    firstName: 'Michael',
-    lastName: 'Chang',
+    fullName: 'Michael Chang',
     email: 'm.chang@company.com',
     phone: '555-0104',
     gender: 'PREFER_NOT_TO_SAY',
