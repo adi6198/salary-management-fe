@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken, clearAuth } from '../utils/storage';
+import { keysToCamel, keysToSnake } from '../utils/caseConverter';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
@@ -10,12 +11,18 @@ const apiClient = axios.create({
   },
 });
 
-// Request Interceptor: Attach Authorization Bearer token
+// Request Interceptor: Attach Authorization Bearer token and snake_case payload
 apiClient.interceptors.request.use(
   (config) => {
     const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (config.data && !(config.data instanceof FormData)) {
+      config.data = keysToSnake(config.data);
+    }
+    if (config.params) {
+      config.params = keysToSnake(config.params);
     }
     return config;
   },
@@ -27,9 +34,22 @@ apiClient.interceptors.request.use(
 // Response Interceptor: Extract data and handle 401 unauthorized errors
 apiClient.interceptors.response.use(
   (response) => {
-    // The backend uses format: { success: true, data: ... } or raw data.
-    // Let's standardise returning response.data.data or response.data.
-    return response.data;
+    const res = keysToCamel(response.data);
+    // Handle standard API envelope
+    if (res && res.success !== undefined && res.data !== undefined) {
+      // Backend pagination format
+      if (res.pagination) {
+        console.log(res.data, res.pagination);
+        return { data: res.data, meta: res.pagination };
+      }
+      // Mock pagination format
+      if (res.data && res.data.items && res.data.meta) {
+        return { data: res.data.items, meta: res.data.meta };
+      }
+      // Fallback: just return the inner data
+      return res.data.data ? res.data : res;
+    }
+    return res;
   },
   (error) => {
     if (error.response && error.response.status === 401) {

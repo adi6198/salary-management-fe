@@ -1,4 +1,5 @@
-import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowUp, ArrowDown, ArrowUpDown, ChevronDown, ChevronRight } from 'lucide-react';
 import Skeleton from '../ui/Skeleton';
 import EmptyState from '../ui/EmptyState';
 import '../../styles/data-table.css';
@@ -12,7 +13,17 @@ const DataTable = ({
   onSort,
   emptyStateTitle = 'No records found',
   emptyStateDesc = 'Adjust your filters or try a different search term.',
+  expandableRowContent, // (row) => ReactNode
 }) => {
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  const toggleRow = (id) => {
+    const newSet = new Set(expandedRows);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setExpandedRows(newSet);
+  };
+
   const renderSortIcon = (columnKey) => {
     if (sortColumn !== columnKey) return <ArrowUpDown size={14} className="sort-icon inactive" />;
     return sortDirection === 'asc' ? <ArrowUp size={14} className="sort-icon active" /> : <ArrowDown size={14} className="sort-icon active" />;
@@ -58,6 +69,7 @@ const DataTable = ({
       <table className="data-table">
         <thead>
           <tr>
+            {expandableRowContent && <th style={{ width: '40px' }}></th>}
             {columns.map((col) => (
               <th 
                 key={col.key} 
@@ -74,18 +86,36 @@ const DataTable = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((row, rowIndex) => (
-            <tr key={row.id || rowIndex}>
-              {columns.map((col) => (
-                <td 
-                  key={`${row.id || rowIndex}-${col.key}`}
-                  className={`${col.align === 'right' ? 'text-right' : ''}`}
-                >
-                  {col.render ? col.render(row[col.key], row) : row[col.key]}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {data.map((row, rowIndex) => {
+            const rowId = row.id || rowIndex;
+            const isExpanded = expandedRows.has(rowId);
+            return (
+              <React.Fragment key={rowId}>
+                <tr className={isExpanded ? 'expanded-parent' : ''}>
+                  {expandableRowContent && (
+                    <td className="expand-cell" onClick={() => toggleRow(rowId)}>
+                      {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                    </td>
+                  )}
+                  {columns.map((col) => (
+                    <td 
+                      key={`${rowId}-${col.key}`}
+                      className={`${col.align === 'right' ? 'text-right' : ''}`}
+                    >
+                      {col.render ? col.render(row[col.key], row) : row[col.key]}
+                    </td>
+                  ))}
+                </tr>
+                {isExpanded && expandableRowContent && (
+                  <tr className="expanded-row">
+                    <td colSpan={columns.length + 1} className="expanded-content">
+                      {expandableRowContent(row)}
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </table>
     </div>

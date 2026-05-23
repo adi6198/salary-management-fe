@@ -4,6 +4,9 @@ import Select from '../ui/Select';
 import Button from '../ui/Button';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useState, useEffect } from 'react';
+import countries from 'i18n-iso-countries';
+import english from 'i18n-iso-countries/langs/en.json';
+countries.registerLocale(english);
 import '../../styles/employee-list.css';
 
 const EmployeeFilters = ({
@@ -25,13 +28,30 @@ const EmployeeFilters = ({
 
   // Sync prop changes back to local (e.g. on reset)
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalSearch(filters.search || '');
   }, [filters.search]);
 
   const statusOptions = [
-    { label: 'All Statuses', value: '' },
+    { label: 'All Statuses', value: 'all' },
     { label: 'Active', value: 'true' },
     { label: 'Inactive', value: 'false' },
+  ];
+
+  const genderOptions = [
+    { label: 'All Genders', value: '' },
+    { label: 'Male', value: 'MALE' },
+    { label: 'Female', value: 'FEMALE' },
+    { label: 'Other', value: 'OTHER' },
+    { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
+  ];
+
+  const employmentTypeOptions = [
+    { label: 'All Types', value: '' },
+    { label: 'Full Time', value: 'FULL_TIME' },
+    { label: 'Part Time', value: 'PART_TIME' },
+    { label: 'Contractor', value: 'CONTRACTOR' },
+    { label: 'Intern', value: 'INTERN' },
   ];
 
   const departmentOptions = [
@@ -39,14 +59,16 @@ const EmployeeFilters = ({
     ...departments.map(d => ({ label: d.name, value: d.id }))
   ];
 
-  // Filter job titles based on selected department
-  const filteredJobTitles = filters.departmentId 
-    ? jobTitles.filter(jt => jt.departmentId === filters.departmentId)
-    : jobTitles;
-
   const jobTitleOptions = [
     { label: 'All Job Titles', value: '' },
-    ...filteredJobTitles.map(jt => ({ label: jt.title, value: jt.id }))
+    ...jobTitles.map(jt => ({ label: jt.name, value: jt.id }))
+  ];
+
+  // Country options dynamically generated
+  const countryCodes = Object.keys(countries.getNames('en') || {});
+  const countryOptions = [
+    { label: 'All Countries', value: '' },
+    ...countryCodes.map(code => ({ label: countries.getName(code, 'en'), value: countries.getName(code, 'en') }))
   ];
 
   return (
@@ -64,15 +86,15 @@ const EmployeeFilters = ({
         <div className="filter-item">
           <Select
             options={statusOptions}
-            value={filters.status}
-            onChange={(e) => onFilterChange('status', e.target.value)}
+            value={filters.is_active || 'all'}
+            onChange={(e) => onFilterChange('is_active', e.target.value)}
           />
         </div>
 
         <div className="filter-item">
           <Select
             options={departmentOptions}
-            value={filters.departmentId}
+            value={filters.departmentId || ''}
             onChange={(e) => {
               onFilterChange('departmentId', e.target.value);
               // Reset job title when department changes
@@ -84,9 +106,32 @@ const EmployeeFilters = ({
         <div className="filter-item">
           <Select
             options={jobTitleOptions}
-            value={filters.jobTitleId}
+            value={filters.jobTitleId || ''}
             onChange={(e) => onFilterChange('jobTitleId', e.target.value)}
-            disabled={filters.departmentId && filteredJobTitles.length === 0}
+          />
+        </div>
+
+        <div className="filter-item">
+          <Select
+            options={countryOptions}
+            value={filters.country || ''}
+            onChange={(e) => onFilterChange('country', e.target.value)}
+          />
+        </div>
+
+        <div className="filter-item">
+          <Select
+            options={genderOptions}
+            value={filters.gender || ''}
+            onChange={(e) => onFilterChange('gender', e.target.value)}
+          />
+        </div>
+
+        <div className="filter-item">
+          <Select
+            options={employmentTypeOptions}
+            value={filters.employment_type || ''}
+            onChange={(e) => onFilterChange('employment_type', e.target.value)}
           />
         </div>
 

@@ -10,10 +10,10 @@ import { useEmployeeFilters } from '../hooks/useEmployeeFilters';
 import { formatCurrency } from '../utils/formatCurrency';
 import { downloadCSV } from '../utils/csvDownload';
 import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
 import DataTable from '../components/data/DataTable';
 import Pagination from '../components/ui/Pagination';
 import EmployeeFilters from '../components/employee/EmployeeFilters';
+import { GENDER_LABELS, EMPLOYMENT_TYPE_LABELS } from '../utils/constants';
 import { useToast } from '../hooks/useToast';
 import '../styles/employee-list.css';
 
@@ -21,22 +21,30 @@ const EmployeeListPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   
-  const [sortColumn, setSortColumn] = useState('createdAt');
+  const [sortColumn, setSortColumn] = useState('created_at');
   const [sortDirection, setSortDirection] = useState('desc');
   const [isExporting, setIsExporting] = useState(false);
 
   const { page, limit, setPage, setLimit } = usePagination(1, 10);
   const { filters, handleFilterChange, resetFilters } = useEmployeeFilters();
 
-  const queryParams = useMemo(() => ({
-    page,
-    limit,
-    sort: sortColumn,
-    order: sortDirection,
-    ...filters
-  }), [page, limit, sortColumn, sortDirection, filters]);
+  const queryParams = useMemo(() => {
+    let apiSortColumn = sortColumn;
+    if (sortColumn === 'employeeCode') apiSortColumn = 'employee_code';
+    else if (sortColumn === 'salaryUsd') apiSortColumn = 'salary_usd';
+    else if (sortColumn === 'isActive') apiSortColumn = 'is_active';
+    else if (sortColumn === 'createdAt') apiSortColumn = 'created_at';
 
-  const { data: employeesData, loading: employeesLoading } = useFetch(
+    return {
+      page,
+      limit,
+      sort: apiSortColumn,
+      order: sortDirection,
+      ...filters
+    };
+  }, [page, limit, sortColumn, sortDirection, filters]);
+
+  const { data: employeesData, meta: employeesDataMeta, loading: employeesLoading } = useFetch(
     useCallback(() => getEmployees(queryParams), [queryParams]),
     true
   );
@@ -62,7 +70,7 @@ const EmployeeListPage = () => {
       const blob = response.data || response;
       downloadCSV(blob, `employees_export_${new Date().getTime()}.csv`);
       showToast('success', 'Export completed successfully');
-    } catch (error) {
+    } catch {
       showToast('error', 'Failed to export employees');
     } finally {
       setIsExporting(false);
@@ -82,11 +90,8 @@ const EmployeeListPage = () => {
       sortable: true,
       render: (_, row) => (
         <div className="employee-cell">
-          <div className="employee-avatar">
-            {row.firstName.charAt(0)}{row.lastName.charAt(0)}
-          </div>
           <div className="employee-info">
-            <span className="employee-name">{row.firstName} {row.lastName}</span>
+            <span className="employee-name">{row.isActive ? '🟢' : '🔴'}{row.firstName} {row.lastName}</span>
             <span className="employee-email">{row.email}</span>
           </div>
         </div>
@@ -99,10 +104,28 @@ const EmployeeListPage = () => {
       render: (_, row) => row.department?.name || '-'
     },
     {
+      key: 'country',
+      header: 'Country',
+      sortable: false,
+      render: (_, row) => row.country || '-'
+    },
+    {
+      key: 'gender',
+      header: 'Gender',
+      sortable: false,
+      render: (_, row) => GENDER_LABELS[row.gender]
+    },
+    {
+      key: 'employmentType',
+      header: 'Emp. Type',
+      sortable: false,
+      render: (_, row) => EMPLOYMENT_TYPE_LABELS[row.employmentType] || '-'
+    },
+    {
       key: 'jobTitle',
       header: 'Job Title',
       sortable: false,
-      render: (_, row) => row.jobTitle?.title || '-'
+      render: (_, row) => row.jobTitle?.name || '-'
     },
     {
       key: 'salaryUsd',
@@ -110,16 +133,6 @@ const EmployeeListPage = () => {
       sortable: true,
       align: 'right',
       render: (value) => formatCurrency(value, 'USD')
-    },
-    {
-      key: 'isActive',
-      header: 'Status',
-      sortable: true,
-      render: (isActive) => (
-        <Badge variant={isActive ? 'success' : 'danger'}>
-          {isActive ? 'Active' : 'Inactive'}
-        </Badge>
-      )
     },
     {
       key: 'actions',
@@ -151,13 +164,13 @@ const EmployeeListPage = () => {
     }
   ];
 
-  const items = employeesData?.data?.items || employeesData?.items || [];
-  const meta = employeesData?.data?.meta || employeesData?.meta || { total: 0, totalPages: 0 };
+  const items = employeesData && employeesData.length ? employeesData : [];
+  const meta = employeesDataMeta || { total: 0, totalPages: 0 };
   const departments = departmentsData?.data || departmentsData || [];
   const jobTitles = jobTitlesData?.data || jobTitlesData || [];
 
   return (
-    <div className="page-container">
+    <div className="page-container employee-list-page">
       <div className="page-header">
         <div>
           <h1 className="page-title">Employees</h1>
