@@ -118,7 +118,7 @@ const EmployeeDetailPage = () => {
             <DetailItem label="Department" value={employee.department?.name} />
             <DetailItem label="Job Title" value={employee.jobTitle?.name} />
             <DetailItem label="Employment Type" value={formatEmploymentType(employee.employmentType)} />
-            <DetailItem label="Location" value={`${employee.city}, ${countryName}`} />
+            <DetailItem label="Location" value={`${employee.city}, ${employee.state}, ${countryName}`} />
           </div>
         </Card>
       </div>

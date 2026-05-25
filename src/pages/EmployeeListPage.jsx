@@ -1,6 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Download, Edit2, Eye } from 'lucide-react';
+import countries from 'i18n-iso-countries';
+import enLocale from 'i18n-iso-countries/langs/en.json';
 import { getEmployees, exportEmployeesCSV } from '../api/employees.api';
 import { getDepartments } from '../api/departments.api';
 import { getJobTitles } from '../api/jobTitles.api';
@@ -16,6 +18,8 @@ import EmployeeFilters from '../components/employee/EmployeeFilters';
 import { GENDER_LABELS, EMPLOYMENT_TYPE_LABELS } from '../utils/constants';
 import { useToast } from '../hooks/useToast';
 import '../styles/employee-list.css';
+
+countries.registerLocale(enLocale);
 
 const EmployeeListPage = () => {
   const navigate = useNavigate();
@@ -104,10 +108,13 @@ const EmployeeListPage = () => {
       render: (_, row) => row.department?.name || '-'
     },
     {
-      key: 'country',
-      header: 'Country',
+      key: 'location',
+      header: 'Location',
       sortable: false,
-      render: (_, row) => row.country || '-'
+      render: (_, row) => {
+        const countryName = row.country ? (countries.getName(row.country, 'en') || row.country) : '-';
+        return row.city ? `${row.city}, ${row.state}, ${countryName}` : '-';
+      }
     },
     {
       key: 'gender',

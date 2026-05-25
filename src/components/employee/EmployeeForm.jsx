@@ -42,6 +42,7 @@ const EmployeeForm = ({
       departmentId: '',
       jobTitleId: '',
       country: '',
+      state: '',
       city: '',
       employmentType: '',
       salaryLocal: '',
@@ -260,6 +261,16 @@ const EmployeeForm = ({
                   { label: 'Select country', value: '' },
                   ...countryOptions
                 ]}
+              />
+            </div>
+
+            <div className="form-group">
+              <Input
+                label="State"
+                required
+                className={getFieldClass('state')}
+                error={errors.state?.message}
+                {...register('state', { required: validators.required })}
               />
             </div>
 
