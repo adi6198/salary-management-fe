@@ -214,7 +214,8 @@ const EmployeeForm = ({
                   { label: 'Select type', value: '' },
                   { label: 'Full Time', value: 'FULL_TIME' },
                   { label: 'Part Time', value: 'PART_TIME' },
-                  { label: 'Contract', value: 'CONTRACT' }
+                  { label: 'Contract', value: 'CONTRACT' },
+                  { label: 'Intern', value: 'INTERN' }
                 ]}
               />
             </div>
