@@ -10,6 +10,7 @@ import EmployeeForm from '../components/employee/EmployeeForm';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import { UserX } from 'lucide-react';
+import { getErrorMessage } from '../utils/errorHandler';
 
 const EditEmployeePage = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const EditEmployeePage = () => {
         showToast('error', 'Failed to update employee. Please try again.');
       }
     } catch (error) {
-      showToast('error', error.response?.data?.message || 'Failed to update employee.');
+      showToast('error', getErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }

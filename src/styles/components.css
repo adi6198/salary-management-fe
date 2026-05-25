@@ -435,6 +435,7 @@
   word-break: break-word;
   line-height: 1.4;
   text-align: left;
+  white-space: pre-wrap;
 }
 
 .toast-close {

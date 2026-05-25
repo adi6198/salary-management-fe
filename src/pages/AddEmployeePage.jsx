@@ -8,6 +8,7 @@ import { useToast } from '../hooks/useToast';
 import Breadcrumb from '../components/ui/Breadcrumb';
 import EmployeeForm from '../components/employee/EmployeeForm';
 import Spinner from '../components/ui/Spinner';
+import { getErrorMessage } from '../utils/errorHandler';
 
 const AddEmployeePage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const AddEmployeePage = () => {
         showToast('error', 'Failed to create employee. Please try again.');
       }
     } catch (error) {
-      showToast('error', error.response?.data?.message || 'Failed to create employee.');
+      showToast('error', getErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
